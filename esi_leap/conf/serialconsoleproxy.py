@@ -10,26 +10,20 @@
 #    License for the specific language governing permissions and limitations
 #    under the License.
 
-
-from esi_leap.conf import api
-from esi_leap.conf import dummy_node
-from esi_leap.conf import ironic
-from esi_leap.conf import keystone
-from esi_leap.conf import netconf
-from esi_leap.conf import notification
-from esi_leap.conf import pecan
-from esi_leap.conf import serialconsoleproxy
 from oslo_config import cfg
 
-CONF = cfg.CONF
+
+opts = [
+    cfg.HostAddressOpt("host_address", default="0.0.0.0"),
+    cfg.PortOpt("port", default=6083),
+    cfg.IntOpt("timeout", default=-1),
+]
 
 
-CONF.register_group(cfg.OptGroup(name="database"))
-api.register_opts(CONF)
-dummy_node.register_opts(CONF)
-ironic.register_opts(CONF)
-keystone.register_opts(CONF)
-netconf.register_opts(CONF)
-notification.register_opts(CONF)
-pecan.register_opts(CONF)
-serialconsoleproxy.register_opts(CONF)
+serialconsoleproxy_group = cfg.OptGroup(
+    "serialconsoleproxy", title="Serial Console Proxy Options"
+)
+
+
+def register_opts(conf):
+    conf.register_opts(opts, group=serialconsoleproxy_group)
